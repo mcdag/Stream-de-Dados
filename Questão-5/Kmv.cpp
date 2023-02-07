@@ -7,15 +7,16 @@
 
 using namespace std; 
 
-Kmv::Kmv(int k, int r) {
+Kmv::Kmv(int k, long long r, int prime) {
     this->k = k;
     this->r = r;
+    this->prime = prime;
 };
 
-int Kmv::hash(string x) {
-    int y = 0;
+long long Kmv::hash(string x) {
+    long long y = 0;
     for(int i=0; i<x.length(); i++){
-        y *= 131;
+        y *= this->prime;
         y += x[i];
         y %= r;
     }
@@ -33,7 +34,7 @@ void Kmv::update(string x){
     }
 };
 
-double Kmv::query(){
+long double Kmv::query(){
     if(list.size() < k) {
         return list.size();
     };
@@ -41,8 +42,8 @@ double Kmv::query(){
     return (k - 1) * (r * 1.0/x);
 };
 
-double Kmv::merge(Kmv newKmv){
-    priority_queue <pair<string, int>, vector<pair<string, int> >, Compare> originalList;
+long double Kmv::merge(Kmv newKmv){
+    priority_queue <pair<string, long long>, vector<pair<string, long long> >, Compare> originalList;
 
     originalList = list;
 
@@ -51,13 +52,13 @@ double Kmv::merge(Kmv newKmv){
         newKmv.list.pop();
     };
     
-    double result = query();
+    long double result = query();
     list = originalList;
 
     return result;
 };
 
-double Kmv::intersect(Kmv newKmv){
+long double Kmv::intersect(Kmv newKmv){
     int intersections = 0;
     for(auto itr : newKmv.set){
         if(set.count(itr) == 1){
